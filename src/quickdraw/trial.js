@@ -1,19 +1,18 @@
 const canvasSketch = require('canvas-sketch');
 
 const settings = {
-    dimensions: [3000, 3000]
+    //dimensions: [3000, 3000]
+    dimensions: [1654, 1169]
 }
 
 let bees = [];
 let NUMBER_OF_ROWS = 10;
-let NUMBER_OF_COLS = 10;
-
+let NUMBER_OF_COLS = 7;
+let NUMBER_OF_BEES = 100;
 const sketch = async () => {
-    for (let i = 0; i < 100; i++) {
-        let response = await fetch('http://localhost:3000/bee');
-        let data = await response.json();
-        bees.push(data);
-    }
+    let response = await fetch('http://localhost:3000/bee?number=200');
+    let data = await response.json();
+    bees = data;
 
     console.log(bees.length);
     //let drawing = bees[0].drawing;
@@ -24,11 +23,12 @@ const sketch = async () => {
         for (let i = 0; i < NUMBER_OF_ROWS; i++) {
             for (let j = 0; j < NUMBER_OF_COLS; j++) {
                 context.beginPath();
-                context.translate(295*i, 295*j);
+                context.translate(155*i, 155*j);
                 let beeNumber = i*NUMBER_OF_COLS+j;
                 //console.log(beeNumber);
                 drawBee(bees[beeNumber].drawing);
-                context.translate(-295*i,-295*j);
+                context.translate(-155*i,-155*j);
+                context.closePath()
             }
         }
 
@@ -36,13 +36,13 @@ const sketch = async () => {
             
             for (let path of drawing) {
                 //console.log(path);
-                context.strokeWidth = 5;
-                context.strokeStyle = "gold";
-                context.lineWidth = 4;
+                context.strokeWidth = 3;
+                context.strokeStyle = "black";
+                context.lineWidth = 3;
 
                 for (let i = 0; i < path[0].length; i++) {
-                    let x = path[0][i];
-                    let y = path[1][i];
+                    let x = path[0][i]/2;
+                    let y = path[1][i]/2;
                     //console.log("x:", path[0][i], "y:", path[1][i]);
                     context.lineTo(x, y);
                     context.stroke();
